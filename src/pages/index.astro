@@ -1,16 +1,21 @@
 ---
-
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import products from '@/data/products.json'
+import Card from '@/components/Card.astro'
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Shop">
+  <div>
+    <h1 class="mb-4 text-5xl font-bold">Astro Shop</h1>
+    <h3 class="mb-8 text-xl text-gray-500">
+      An example shop using View Transitions with
+      <a href="https://astro.build/" class="text-black hover:underline">
+        Astro
+      </a>.
+    </h3>
+  </div>
+
+  <div class="grid grid-cols-4 gap-4 py-8">
+    {products.map((i) => <Card {...i} />)}
+  </div>
+</BaseLayout>
