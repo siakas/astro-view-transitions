@@ -1,0 +1,83 @@
+---
+import Card from '@/components/Card.astro'
+import products from '@/data/products.json'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import type { Product } from '@/types'
+
+export function getStaticPaths() {
+  return products.map((i) => ({
+    params: {
+      slug: i.slug,
+    },
+  }))
+}
+
+const { slug } = Astro.params
+const product = products.find((i) => i.slug === slug) as Product
+---
+
+<BaseLayout
+  title={product.name}
+  description={product.description}
+  image={product.cover}
+>
+  <div class="relative mx-auto max-w-4xl">
+    <div class="pb-10">
+      <a href="/">戻るボタン</a>
+      <a href="/">home</a>
+      <span>{product.category}</span>
+      <span>{product.name}</span>
+    </div>
+
+    <div class="flex flex-col sm:gap-8 md:flex-row">
+      <div class="h-full max-h-[450px] w-full max-w-[450px]">
+        <img
+          src={product.cover}
+          alt=""
+          transition:name={`${slug} image`}
+          class="h-full w-full rounded-xl border-b object-cover shadow-2xl shadow-gray-200"
+        />
+      </div>
+      <article class="flex flex-col justify-between py-4">
+        <div>
+          <h1 class="animate-in text-3xl font-bold sm:text-5xl">
+            {product.name}
+          </h1>
+          <div transition:name={`${slug} title`}></div>
+          <p
+            class="max-w-sm py-4 text-lg"
+            transition:name={`${slug} description`}
+          >
+            {product.description}
+          </p>
+        </div>
+      </article>
+    </div>
+
+    <p class="py-6 leading-relaxed md:py-20">
+      Step into a neon-lit realm where fashion meets the digital frontier. Our
+      boutique is a portal to tomorrow's style, where code and couture collide.
+      Unleash your inner tech fashionista with attire that bridges the gap
+      between reality and the virtual cosmos.
+    </p>
+
+    <h4 class="pb-6 text-lg font-bold">You might also like</h4>
+
+    <div class="grid grid-cols-3 gap-4">
+      {
+        products
+          .filter((i) => i.category === product.category && i.id !== product.id)
+          .map((p) => <Card {...p} />)
+      }
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  document.addEventListener('click', (event) => {
+    if (location.pathname === '/') return
+    if ((event as any)?.target?.tagName === 'A') {
+      document.querySelector('.animate-in')?.classList.add('opacity-0')
+    }
+  })
+</script>

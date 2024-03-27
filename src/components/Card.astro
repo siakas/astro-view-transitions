@@ -1,17 +1,7 @@
 ---
-interface Props {
-  id: number
-  name: string
-  slug: string
-  price: number
-  description: string
-  cover: string
-  coverCredits: string
-  category: string
-}
+import type { Product } from '@/types'
 
-const { id, name, slug, price, description, cover, coverCredits, category } =
-  Astro.props
+const { name, slug, price, description, cover } = Astro.props as Product
 const transitionName = slug
 ---
 
